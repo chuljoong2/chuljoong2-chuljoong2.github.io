@@ -1,0 +1,179 @@
+---
+layout: post
+title: "2주차 과제"
+date: 2022-03-11 18:58:16 +0900
+categories: Homework
+---
+
+# jekyll 설치
+
+## ruby 설치
+
+Jekyll은 루비 2.4.0 이상의 버전을 필요로 한다. 루비 2.6.3 버전에서 가장 호환이 잘된다고 하므로 새로운 버전의 루비를 설치해야 한다.
+
+### homebrew 사용하기
+
+우선 루비가 설치되어 있지 않은 경우에 다음 명령어로 루비를 설치한다.
+
+```bash
+brew install ruby
+```
+
+루비의 버전을 관리해 주는 rbenv라는 프로그램을 설치한다. Homebrew를 통해 다음 명령어 한줄이면 설치가 가능하다.
+
+```bash
+brew install rbenv
+rbenv -v
+```
+
+rbenv -v는 버전을 확인하는 명령어로 잘 설치되었나 확인한다.
+
+```bash
+rbenv install 2.6.3
+rbenv global 2.6.3
+ruby -v
+ruby 2.6.3p62 (2019-04-16 revision 67580)
+```
+
+명령어 rbenv install 2.6.3를 입력하면 2.6.3 버전의 루비를 설치할 수 있고 rbenv global 2.6.3을 입력하면 전역으로 사용할 루비의 버전을 지정할 수 있다.
+
+### Jekyll 설치
+
+```bash
+# 블로그 파일이 들어갈 디렉토리에 새 Jekyll 사이트를 생성한다
+jekyll new chuljoong2.github.io
+
+# 생성된 디렉토리로 이동한다
+cd chuljoong2.github.io
+
+# 미리보기 서버로 사이트를 빌드한다
+bundle exec jekyll serve
+```
+
+이제 브라우저로 http://localhost:4000에 접속할 수 있다.
+
+### 깃허브 사이트 배포
+
+Github에서 chuljoong2.github.io로 repository를 만든다. chuljoong2 자리에는 github의 username이 들어가면 된다.
+
+```bash
+# git init으로 git 생성
+git init
+
+# git status로 현재 git 상황 보기
+git status
+
+# git add -A로 모든 파일을 staging area로 옮긴다
+git add -A
+
+# git status로 옮겨졌는지 확인
+git status
+
+# git commit으로 커밋
+git commit -m 'Initial commit'
+
+# git log로 커밋 확인
+git log
+
+# git 원격저장소로 log remote
+git remote add origin https://github.com/{$username}/{$username}.github.io.git
+
+# git remote로 확인
+git remote -v
+
+# git push로 동기화
+git push -u origin master
+```
+
+이제 chuljoong2.github.io에서 만든 사이트를 볼 수 있다.
+
+### **FilePermissionError 발생 시**
+
+터미널의 셸 설정 파일에 rbenv를 위한 설정을 해야한다.
+
+```bash
+rbenv versions
+```
+
+현재 rbenv가 관리하고 있는 루비의 버전들을 확인할 수 있다. 정상적인 경우에는 아래와 같이 결과가 나올 것이다.
+
+system
+
+- 2.6.3 (set by /Users/chuljoong/.rbenv/version)
+
+```bash
+vi ~/.zshrc
+```
+
+기본 bash를 쓰는 경우 ~/.bash_profile에, zsh를 쓰는 경우 ~/.zshrc에 작성하면 된다.
+
+.zshrc파일에 다음 두 줄을 추가합니다. 명령어의 Home에는 rbenv vesrions를 통해 얻은 경로를 넣으면 된다. /Users/chuljoong
+
+```bash
+export PATH={$Home}/.rbenv/bin:$PATH && \
+eval "$(rbenv init -)"
+```
+
+그리고 터미널을 재실행 하거나 다음 명령어를 입력하면 된다.
+
+```
+source ~/.zshrc
+```
+
+# 간단한 git 명령어
+
+## 버전 관리의 시작
+
+### 버전 관리 기본
+
+1. Git이란?
+
+   버전 : **하나의 유의미한 변화**가 결과물로 나온 것
+
+   - 하나의 버전을 관리하는 과정에서 **협업**이 필요할 수 있다.
+   - 하나의 버전이 관리되는 과정에서 **되돌리는 과정**이 필요하다.
+   - 하나의 버전이 관리되는 과정에서 **효율적인 백업**이 필요하다.
+
+   → 이런 관리를 도와주는 도구가 git이다.
+
+2. 버전이 되기까지 거쳐가는 네 가지 공간
+   - Working directory : 내가 코드작업을 하고 있는 공간
+   - Staging area : **버전이 될 후보**들이 올라오는 공간, working directory에서 선별
+   - Local Reposityory : 내 컴퓨터에 버전 들이 저장되어 있는 공간
+   - Remote Repositroy : **원격 저장소** (깃허브)
+
+### 버전 만들기 (init, add, commit)
+
+`git init` : "**이 폴더** 안에서 저장 관리를 **시작**할 것이다"
+
+`git status` : "버전 관리가 되고 있는 이 폴더에 **상태**를 알려줘"
+
+<**untracked files**> : 추적되지 않은 파일(git 입장에서 한번도 관여되지 않은 파일)
+
+`git add <파일>` : "<파일>을 **Staging area**로 옮겨라"
+
+`git add .` : "이 폴더 안에 있는 **모든 변경 사항들**을 모두 **Staging area**로 옮겨라"
+
+`git rm --cached <파일>` : **Staging Area**에서 **Working directory**로 다시 내려 준다.
+
+`git commit -m "commit message"` : 버전의 이름과 설명을 "commit message"로 하고 **Local Repository**에 버전을 만들어준다.
+
+`git commit` : 조금 더 자세한 commit message 작성을 위해 commit 작성 창으로 넘어간다.
+
+`git log` : 여태까지 **commit 내역들을 확인**해준다.
+
+### 깃허브에 내 코드 push하기
+
+1. github 원격 저장소 생성
+2. Local repository에 새 버전 만들기
+   - 위에서 배웠던 git init, git add, git commit을 통해 Local repository에 새 버전을 만든다.
+   - `git commit -am "commit message"` : 한번이라도 commit한 대상에 대해 add와 commit을 동시에 하는 명령어
+3. Local에서 Remote repository로 복사 붙여 넣기
+
+   ```
+   git remote add origin https://github.com/Yooncoding/Git_Study.git
+   git push -u origin master
+   ```
+
+   - `git remote add origin <URL>` : **로컬 저장소**에 있는 버전을 origin이란 이름으로 URL주소를 가진 **원격 저장소와 연결**하겠다.
+   - `git push -u origin master` : origin이라고 연결된 **원격 저장소로 로컬 저장소에 있는 버전을 밀어 넣겠다.**
