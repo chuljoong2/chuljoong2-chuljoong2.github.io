@@ -2,7 +2,6 @@
 layout: post
 title: "2주차 과제"
 date: 2022-03-11 18:58:16 +0900
-categories: Homework
 ---
 
 # jekyll 설치
